@@ -1,29 +1,75 @@
+
 class Contenedor {
-    constructor(alto, ancho) {
-      this.alto = alto;
-      this.ancho = ancho;
+    constructor() {
+        this.produdcts=[]
+
     }
 
-    save(object){
-        // Recibe objeto y lo guarda.
+    save(newArray){
+        return this.produdcts.push(newArray)
     }
-    getById(Number){
-        // Recibe id y devuelve el objeto con ese id, o null si no está.
+    getById(id){
+        return this.produdcts.find(p=>p.id==id)
     }
     getAll(){
-        // Devuelve un array con los objetos presentes.
+        return this.produdcts
     }
-    deleteById(Number){
+    deleteById(id){
         // Elimina el objeto con el id buscado
+        let index=this.produdcts.findIndex(p=>p.id==id)
+        this.produdcts.splice(index,1)
     }
     deleteAll(){
         // Elimina todos los objetos presente
+        return this.produdcts.splice(0)
     }
   }
 
-let productsContainer={
-    id:(),
-    tittle:(),
-    price:(),
-    thumbnail:
-}
+const produdctsContainer=new Contenedor()
+
+
+
+const newArray={
+    id:1,
+    title:'Mouse',
+    price:3500,
+    thumbnail:'https://...'
+};
+const newArray1={
+    id:2,
+    title:'Teclado',
+    price:5500,
+    thumbnail:'https://...'
+};
+const newArray2={
+    id:3,
+    title:'Monitor',
+    price:55500,
+    thumbnail:'https://...'
+};
+const newArray4={
+    id:4,
+    title:'Grafica',
+    price:135500,
+    thumbnail:'https://...'
+};
+
+
+produdctsContainer.save(newArray)
+
+produdctsContainer.save(newArray1)
+
+produdctsContainer.save(newArray2)
+
+produdctsContainer.deleteById(2);
+console.log(produdctsContainer)
+produdctsContainer.save(newArray4)
+console.log(produdctsContainer)
+produdctsContainer.deleteAll()
+console.log(produdctsContainer)
+produdctsContainer.save(newArray)
+
+produdctsContainer.save(newArray1)
+
+produdctsContainer.save(newArray2)
+console.log(produdctsContainer)
