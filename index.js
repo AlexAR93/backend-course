@@ -1,31 +1,38 @@
-
+const fs=require('fs');
 class Contenedor {
-    constructor() {
+    constructor(ruta) {
         this.produdcts=[]
-
+        this.ruta=ruta
     }
 
-    save(newArray){
-        return this.produdcts.push(newArray)
+    async save(newArray){
+        this.produdcts.push(newArray)
+        await fs.promises.writeFile(this.ruta, JSON.stringify(this.produdcts))
     }
-    getById(id){
+    async getById(id){
+        this.produdcts=JSON.parse(await fs.promises.readFile(this.ruta,'utf-8'))
         return this.produdcts.find(p=>p.id==id)
     }
-    getAll(){
+    async getAll(){
+        this.produdcts=JSON.parse(await fs.promises.readFile(this.ruta,'utf-8'))
         return this.produdcts
     }
-    deleteById(id){
+    async deleteById(id){
         // Elimina el objeto con el id buscado
         let index=this.produdcts.findIndex(p=>p.id==id)
         this.produdcts.splice(index,1)
+        await fs.promises.writeFile(this.ruta, JSON.stringify(this.produdcts))
+        return this.produdcts
     }
-    deleteAll(){
+    async deleteAll(){
         // Elimina todos los objetos presente
-        return this.produdcts.splice(0)
+        this.produdcts.splice(0)
+        await fs.promises.writeFile(this.ruta, JSON.stringify(this.produdcts))
+        return this.produdcts
     }
   }
 
-const produdctsContainer=new Contenedor()
+
 
 
 
@@ -55,21 +62,21 @@ const newArray4={
 };
 
 
-produdctsContainer.save(newArray)
-
-produdctsContainer.save(newArray1)
-
-produdctsContainer.save(newArray2)
-
-produdctsContainer.deleteById(2);
-console.log(produdctsContainer)
-produdctsContainer.save(newArray4)
-console.log(produdctsContainer)
-produdctsContainer.deleteAll()
-console.log(produdctsContainer)
-produdctsContainer.save(newArray)
-
-produdctsContainer.save(newArray1)
-
-produdctsContainer.save(newArray2)
-console.log(produdctsContainer)
+const createFS=async()=>{
+    const ruta='./products.txt'
+    const produdctsContainer=new Contenedor(ruta)
+    await produdctsContainer.save(newArray)
+    await produdctsContainer.save(newArray2)
+    await produdctsContainer.save(newArray1)
+    await produdctsContainer.getById(1)
+    await produdctsContainer.deleteById(1)
+    await produdctsContainer.deleteAll()
+    await produdctsContainer.deleteById(1)
+    await produdctsContainer.getById(1)
+    await produdctsContainer.save(newArray1)
+    await produdctsContainer.save(newArray2)
+    await produdctsContainer.deleteAll()
+    await produdctsContainer.save(newArray1)
+    
+}
+createFS()
